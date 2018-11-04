@@ -53,7 +53,7 @@ def MoveFish(grid): #inputs: grid
             if grid[i][j][0] == 'F' and grid[i][j][4] == False:
                 temp = grid[i][j]
                 '''four corners: only two cells to move'''
-                if i == 0 and j == 0:
+                if i == 0 and j == 0:           # (0, 0)
                     if grid[i][j + 1][0] == 'E':
                         grid[i][j + 1] = temp
                         grid[i][j + 1][4] = True
@@ -62,7 +62,7 @@ def MoveFish(grid): #inputs: grid
                         grid[i + 1][j] = temp
                         grid[i + 1][j][4] = True
                         grid[i][j] = ['E']
-                elif i == 0 and j == (len(grid) - 1):
+                elif i == 0 and j == (len(grid) - 1): # (0, 9)
                     if grid[i][j - 1][0] == 'E':
                         grid[i][j - 1] = temp
                         grid[i][j - 1][4] = True
@@ -71,7 +71,7 @@ def MoveFish(grid): #inputs: grid
                         grid[i + 1][j] = temp
                         grid[i + 1][j][4] = True
                         grid[i][j] = ['E']
-                elif i == (len(grid) - 1) and j == 0:
+                elif i == (len(grid) - 1) and j == 0: # (9, 0)
                     if grid[i - 1][j][0] == 'E':
                         grid[i - 1][j] = temp
                         grid[i - 1][j][4] = True
@@ -80,7 +80,7 @@ def MoveFish(grid): #inputs: grid
                         grid[i][j + 1] = temp
                         grid[i][j + 1][4] = True
                         grid[i][j] = ['E']
-                elif i == (len(grid) - 1) and j == (len(grid) - 1):
+                elif i == (len(grid) - 1) and j == (len(grid) - 1): # (9, 9)
                     if grid[i - 1][j][0] == 'E':
                         grid[i - 1][j] = temp
                         grid[i - 1][j][4] = True
@@ -90,7 +90,7 @@ def MoveFish(grid): #inputs: grid
                         grid[i][j - 1][4] = True
                         grid[i][j] = ['E']
                 '''outer lines: only three cells to move '''
-                if i == 0 and j != 0:
+                if i == 0 and (j != 0 or j == (len(grid) - 1)): # (0, 1) to (0, 8)
                     if grid[i][j + 1][0] == 'E':
                         grid[i][j + 1] = temp
                         grid[i][j + 1][4] = True
@@ -98,6 +98,19 @@ def MoveFish(grid): #inputs: grid
                     elif grid[i][j - 1][0] == 'E':
                         grid[i][j - 1] = temp
                         grid[i][j - 1][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'E':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][4] = True
+                        grid[i][j] = ['E']
+                if (i != 0 or i == (len(grid) - 1)) and j == (len(grid) - 1): # (1, 9) to (8, 9)
+                    if grid[i][j - 1][0] == 'E':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i - 1][j][0] == 'E':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][4] = True
                         grid[i][j] = ['E']
                     elif grid[i + 1][j][0] == 'E':
                         grid[i + 1][j] = temp
