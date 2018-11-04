@@ -43,7 +43,7 @@ def Iterate(grid): #inputs: grid
     Birth(grid)# creates new fish
     ReduceEnergy(grid)# reduces energy of sharks
     Feed(grid)# feeds fish to sharks
-    Reset(grid)# resets move flag for next iteration
+#    Reset(grid)# resets move flag for next iteration
 
 def MoveFish(grid): #inputs: grid
     rows = len(grid)# rows of grid
@@ -51,21 +51,58 @@ def MoveFish(grid): #inputs: grid
     for i in range(rows): #iterates through rows
         for j in range(cols): #iterates through cols
             if grid[i][j][0] == 'F' and grid[i][j][4] == False:
-                grid[i][j][4] = True
-'''
-                if grid[i][j+1][0] == 'E':
-                    print('R', [i,j+1])
-                elif grid[i][j-1][0] == 'E':
-                    if j-1 == -1:
-                        if grid[i+1][j][0] == 'E':
-                            print('D',[i+1, j])
-                    print('L',[i,j-1])
-                elif grid[i-1][j][0] == 'E':
-                    print('U',[i-1, j])
-                elif grid[i+1][j][0] == 'E':
-                    print('D',[i+1, j])
-#                print("[%2d, %2d]" % (i, j), end='')
-'''
+                temp = grid[i][j]
+                '''four corners: only two cells to move'''
+                if i == 0 and j == 0:
+                    if grid[i][j + 1][0] == 'E':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'E':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][4] = True
+                        grid[i][j] = ['E']
+                elif i == 0 and j == (len(grid) - 1):
+                    if grid[i][j - 1][0] == 'E':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'E':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][4] = True
+                        grid[i][j] = ['E']
+                elif i == (len(grid) - 1) and j == 0:
+                    if grid[i - 1][j][0] == 'E':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i][j + 1][0] == 'E':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][4] = True
+                        grid[i][j] = ['E']
+                elif i == (len(grid) - 1) and j == (len(grid) - 1):
+                    if grid[i - 1][j][0] == 'E':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i][j - 1][0] == 'E':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][4] = True
+                        grid[i][j] = ['E']
+                '''outer lines: only three cells to move '''
+                if i == 0 and j != 0:
+                    if grid[i][j + 1][0] == 'E':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i][j - 1][0] == 'E':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][4] = True
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'E':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][4] = True
+                        grid[i][j] = ['E']
 
 
 def Age(grid): #inputs: grid
@@ -100,15 +137,22 @@ def Reset(grid): #inputs: grid
                 grid[i][j][4] = False
 
 grid = MakeGrid(10)
-RandomFish(grid, 16)
+RandomFish(grid, 32)
 RandomShark(grid, 4)
-Iterate(grid)
 for i in range(10): #iterates through rows
     print()
     for j in range(10): #iterates through cols
         print('%32s' % grid[i][j], end = '')
-
-
+Iterate(grid)
+print('\n')
+for i in range(10): #iterates through rows
+    print()
+    for j in range(10): #iterates through cols
+        print('%32s' % grid[i][j], end = '')
+for i in range(10): #iterates through rows
+    print()
+    for j in range(10): #iterates through cols
+        print('(%2d, %2d)' % (i, j), end = '')
 
 
 
