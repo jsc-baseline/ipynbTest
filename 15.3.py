@@ -1,4 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Nov  4 19:08:08 2018
+
+@author: sphyu
+"""
+
 import random
+import matplotlib
+import matplotlib.pyplot as plt
 
 fmature = 10# age when a fish gives birth
 smature = 20# age when a shark gives birth
@@ -42,8 +52,8 @@ def Iterate(grid): #inputs: grid
     Age(grid)# increments age of fish
     Birth(grid)# creates new fish
     ReduceEnergy(grid)# reduces energy of sharks
-#    Feed(grid)# feeds fish to sharks
-#    Reset(grid)# resets move flag for next iteration
+    Feed(grid)# feeds fish to sharks
+    Reset(grid)# resets move flag for next iteration
 
 def MoveFish(grid): #inputs: grid
     rows = len(grid)# rows of grid
@@ -273,7 +283,115 @@ def Feed(grid): #inputs: grid
     for i in range(rows): #iterates through rows
         for j in range(cols): #iterates through cols
             if grid[i][j][0] == 'S':
-                grid[i][j][3] += 1
+                temp = grid[i][j].copy()
+                '''four corners: only two cells to eat'''
+                if i == 0 and j == 0:           # (0, 0)
+                    if grid[i][j + 1][0] == 'F':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'F':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][3] += 1
+                        grid[i][j] = ['E']
+                elif i == 0 and j == (len(grid) - 1): # (0, 9)
+                    if grid[i][j - 1][0] == 'F':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'F':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][3] += 1
+                        grid[i][j] = ['E']
+                elif i == (len(grid) - 1) and j == 0: # (9, 0)
+                    if grid[i - 1][j][0] == 'F':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j + 1][0] == 'F':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][3] += 1
+                        grid[i][j] = ['E']
+                elif i == (len(grid) - 1) and j == (len(grid) - 1): # (9, 9)
+                    if grid[i - 1][j][0] == 'F':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j - 1][0] == 'F':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][3] += 1
+                        grid[i][j] = ['E']
+                '''outer lines: only three cells to eat'''
+                if i == 0 and (j != (len(grid) - 1) and j != 0): # (0, 1) to (0, 8)
+                    if grid[i][j + 1][0] == 'F':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j - 1][0] == 'F':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'F':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][3] += 1
+                        grid[i][j] = ['E']
+                if (i != 0 and i != (len(grid) - 1)) and j == (len(grid) - 1): # (1, 9) to (8, 9)
+                    if grid[i][j - 1][0] == 'F':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i - 1][j][0] == 'F':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i + 1][j][0] == 'F':
+                        grid[i + 1][j] = temp
+                        grid[i + 1][j][3] += 1
+                        grid[i][j] = ['E']
+                if i == (len(grid) - 1) and (j != 0 and j != (len(grid) - 1)): # (9, 1) to (9, 8)
+                    if grid[i - 1][j][0] == 'F':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j + 1][0] == 'F':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j - 1][0] == 'F':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][3] += 1
+                        grid[i][j] = ['E']
+                if (i != 0 and i != (len(grid) - 1)) and j == 0: # (1, 0) to (8, 0)
+                    if grid[i - 1][j][0] == 'F':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j + 1][0] == 'F':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][i + 1][0] == 'F':
+                        grid[i][i + 1] = temp
+                        grid[i][i + 1][3] += 1
+                        grid[i][j] = ['E']
+                '''inner lines: can eat in any immediate horizontal or vertical cells'''
+                if (i > 0 and i < (len(grid) - 1)) and (j > 0 and j < (len(grid) - 1)): # (1, 1) to (8, 8)
+                    if grid[i - 1][j][0] == 'F':
+                        grid[i - 1][j] = temp
+                        grid[i - 1][j][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j + 1][0] == 'F':
+                        grid[i][j + 1] = temp
+                        grid[i][j + 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][i + 1][0] == 'F':
+                        grid[i][i + 1] = temp
+                        grid[i][i + 1][3] += 1
+                        grid[i][j] = ['E']
+                    elif grid[i][j - 1][0] == 'F':
+                        grid[i][j - 1] = temp
+                        grid[i][j - 1][3] += 1
+                        grid[i][j] = ['E']
 
 def Reset(grid): #inputs: grid
     for i in range(len(grid)): #iterates through rows
@@ -281,31 +399,33 @@ def Reset(grid): #inputs: grid
             if grid[i][j][0] == 'F':
                 grid[i][j][4] = False
 
-grid = MakeGrid(10)
-RandomFish(grid, 1)
-RandomShark(grid, 16)
-for i in range(10): #iterates through rows
-    print()
-    for j in range(10): #iterates through cols
-        print('%32s' % grid[i][j], end = '')
-Iterate(grid)
-Iterate(grid)
-Iterate(grid)
-Iterate(grid)
+def Count(grid):
+    rows = len(grid)# rows of grid
+    cols = len(grid[0])# cols of grid
+    fish = 0
+    shark = 0
+    for i in range(rows): #iterates through rows
+        for j in range(cols): #iterates through cols
+            if grid[i][j][0] == 'F':
+                fish += 1
+            elif grid[i][j][0] == 'S':
+                shark += 1
+    return fish, shark
 
-print('\n')
-for i in range(10): #iterates through rows
-    print()
-    for j in range(10): #iterates through cols
-        print('%32s' % grid[i][j], end = '')
-for i in range(10): #iterates through rows
-    print()
-    for j in range(10): #iterates through cols
-        print('(%2d, %2d)' % (i, j), end = '')
+def ShowMe(grid):
+    print("image")
 
-
-
-
-
-
-
+grid = MakeGrid(100)
+RandomFish(grid, 7000)
+RandomShark(grid, 100)
+fish, shark = [], []
+for i in range(100):
+    for j in range(5):
+        Iterate(grid)
+        f, s = Count(grid)
+        fish.append(f)
+        shark.append(s)
+fig, ax = plt.subplots()
+ax.plot(fish)
+ax.plot(shark, color = "red")
+plt.show()
