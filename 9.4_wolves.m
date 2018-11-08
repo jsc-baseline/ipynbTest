@@ -25,7 +25,7 @@ for t = 1:21                                                    % loops 21-year 
         wolf(t + 1) = wolf(t + 1) + 22;                         % wolves from neighboring Idaho 
     end                                                         % ends check
     if (mod(t, 6) == 0)                                         % checks if year is sixth
-	wolf(t + 1) = wolf(t + 1) * (1 - bacterial_infection);      % computes population after outbreak
+	wolf(t + 1) = wolf(t + 1) * (1 - bacterial_infection);  % computes population after outbreak
     end                                                         % ends check
     wolf(t + 1) = floor(wolf(t + 1));                           % makes whole wolf 
 end                                                             % ends loop 
